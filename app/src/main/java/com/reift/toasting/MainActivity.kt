@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<Button>(R.id.btn_show_toasting).setOnClickListener {
-            Toasting.Builder()
+            Toasting.Builder(Toasting.WARNING_TYPE)
                 .show(supportFragmentManager)
         }
     }

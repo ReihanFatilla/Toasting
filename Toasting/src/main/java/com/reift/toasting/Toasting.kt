@@ -19,7 +19,9 @@ class Toasting private constructor(builder: Builder): DialogFragment() {
     private val title = builder.title
     private val content = builder.content
     private val onButtonClicked = builder.onButtonClicked
-    private lateinit var toastIcon: ImageView
+    private val icon = builder.icon
+    private val buttonText = builder.buttonText
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,15 +35,33 @@ class Toasting private constructor(builder: Builder): DialogFragment() {
             dismiss()
             onButtonClicked
         }
-        toastIcon = v.findViewById(R.id.toast_icon)
+        v.findViewById<ImageView>(R.id.toast_icon).setImageResource(icon)
+        v.findViewById<MaterialButton>(R.id.btn_action).text = buttonText
         return v
     }
 
-    class Builder() {
+    class Builder(type: String = Toasting.SUCCESS_TYPE) {
 
         var onButtonClicked = {}
-        var title = "Success!"
-        var content = "Finished showing the toasting"
+        var title = when(type){
+            WARNING_TYPE -> "Warning!"
+            ERROR_TYPE -> "Error!"
+            else -> "Success!"
+        }
+
+        var buttonText = "Got it"
+
+        var content = when(type){
+            WARNING_TYPE -> "Finished showing Warning toasting"
+            ERROR_TYPE -> "Finished showing Error toasting"
+            else -> "Finished showing Success toasting"
+        }
+
+        var icon = when(type){
+            WARNING_TYPE -> R.drawable.ic_warning
+            ERROR_TYPE -> R.drawable.ic_error
+            else -> R.drawable.ic_success
+        }
 
         fun setTitleText(text: String){
             title = text
@@ -55,9 +75,23 @@ class Toasting private constructor(builder: Builder): DialogFragment() {
             onButtonClicked = onClick
         }
 
+        fun setButtonMessage(text: String){
+            buttonText = text
+        }
+
+        fun setDrawableIcon(drawable: Int){
+            icon = drawable
+        }
+
         fun show(fragmentManager: FragmentManager){
             Toasting(this).show(fragmentManager, null)
         }
 
+    }
+
+    companion object{
+        const val WARNING_TYPE = "warning_type"
+        const val SUCCESS_TYPE = "success_type"
+        const val ERROR_TYPE = "error_type"
     }
 }
