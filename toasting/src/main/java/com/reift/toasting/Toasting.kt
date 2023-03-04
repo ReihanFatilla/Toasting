@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager
 import com.google.android.material.button.MaterialButton
 
 
-class Toasting private constructor(builder: Builder): DialogFragment() {
+class Toasting private constructor(builder: Builder) : DialogFragment() {
 
     private val title = builder.title
     private val content = builder.content
@@ -43,7 +43,7 @@ class Toasting private constructor(builder: Builder): DialogFragment() {
     class Builder(type: String = Toasting.SUCCESS_TYPE) {
 
         var onButtonClicked = {}
-        var title = when(type){
+        var title = when (type) {
             WARNING_TYPE -> "Warning!"
             ERROR_TYPE -> "Error!"
             else -> "Success!"
@@ -51,45 +51,48 @@ class Toasting private constructor(builder: Builder): DialogFragment() {
 
         var buttonText = "Got it"
 
-        var content = when(type){
+        var content = when (type) {
             WARNING_TYPE -> "Finished showing Warning toasting"
             ERROR_TYPE -> "Finished showing Error toasting"
             else -> "Finished showing Success toasting"
         }
 
-        var icon = when(type){
+        var icon = when (type) {
             WARNING_TYPE -> R.drawable.ic_warning
             ERROR_TYPE -> R.drawable.ic_error
             else -> R.drawable.ic_success
         }
 
-        fun setTitleText(text: String){
+        fun setTitleText(text: String) {
             title = text
         }
 
-        fun setContentText(text: String){
+        fun setContentText(text: String) {
             content = text
         }
 
-        fun setOnButtonClick(onClick: () -> Unit){
+        fun setOnButtonClick(onClick: () -> Unit) {
             onButtonClicked = onClick
         }
 
-        fun setButtonMessage(text: String){
+        fun setButtonMessage(text: String) {
             buttonText = text
         }
 
-        fun setDrawableIcon(drawable: Int){
+        fun setDrawableIcon(drawable: Int) {
             icon = drawable
         }
 
-        fun show(fragmentManager: FragmentManager){
+        fun show(fragmentManager: FragmentManager) {
             Toasting(this).show(fragmentManager, null)
+
+
         }
+
 
     }
 
-    companion object{
+    companion object {
         const val WARNING_TYPE = "warning_type"
         const val SUCCESS_TYPE = "success_type"
         const val ERROR_TYPE = "error_type"
