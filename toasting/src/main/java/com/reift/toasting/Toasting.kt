@@ -2,6 +2,7 @@ package com.reift.toasting
 
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,7 +23,9 @@ class Toasting private constructor(builder: Builder) : DialogFragment() {
     private val onButtonClicked = builder.onButtonClicked
     private val icon = builder.icon
     private val buttonText = builder.buttonText
-
+    private val titleFont= builder.titleFont
+    private val contentFont = builder.contentFont
+    private val buttonFont = builder.buttonFont
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,30 +33,45 @@ class Toasting private constructor(builder: Builder) : DialogFragment() {
     ): View {
         val v: View = inflater.inflate(R.layout.toasting_ui, container, false)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        v.findViewById<TextView>(R.id.tv_title).text = title
-        v.findViewById<TextView>(R.id.tv_content).text = content
-        v.findViewById<MaterialButton>(R.id.btn_action).setOnClickListener {
-            dismiss()
-            onButtonClicked
+        v.findViewById<TextView>(R.id.tv_title).apply {
+            text = title
+            titleFont?.let { typeface = it }
+
+        }
+        v.findViewById<TextView>(R.id.tv_content).apply {
+            text = content
+            contentFont?.let { typeface = it }
         }
         v.findViewById<ImageView>(R.id.toast_icon).apply {
             setImageResource(icon)
             jumpAnimation()
         }
-        v.findViewById<MaterialButton>(R.id.btn_action).text = buttonText
+        v.findViewById<MaterialButton>(R.id.btn_action).apply {
+            text = buttonText
+            buttonFont?.let { typeface = it }
+            setOnClickListener {
+                dismiss()
+                onButtonClicked
+            }
+        }
         return v
     }
 
-    class Builder(type: String = Toasting.SUCCESS_TYPE) {
+    class Builder(type: String = SUCCESS_TYPE) {
 
         var onButtonClicked = {}
+
+        var buttonText = "Got it"
+
+        var titleFont: Typeface? = null
+        var contentFont: Typeface? = null
+        var buttonFont: Typeface? = null
+
         var title = when (type) {
             WARNING_TYPE -> "Warning!"
             ERROR_TYPE -> "Error!"
             else -> "Success!"
         }
-
-        var buttonText = "Got it"
 
         var content = when (type) {
             WARNING_TYPE -> "Finished showing Warning toasting"
@@ -67,30 +85,49 @@ class Toasting private constructor(builder: Builder) : DialogFragment() {
             else -> R.drawable.ic_success
         }
 
-        fun setTitleText(text: String) {
+        fun setTitleText(text: String): Builder {
             title = text
+            return this
         }
 
-        fun setContentText(text: String) {
+        fun setContentText(text: String): Builder {
             content = text
+            return this
         }
 
-        fun setOnButtonClick(onClick: () -> Unit) {
+        fun setOnButtonClick(onClick: () -> Unit): Builder {
             onButtonClicked = onClick
+            return this
         }
 
-        fun setButtonMessage(text: String) {
+        fun setButtonMessage(text: String): Builder {
             buttonText = text
+            return this
         }
 
-        fun setDrawableIcon(drawable: Int) {
+        fun setDrawableIcon(drawable: Int): Builder {
             icon = drawable
+            return this
         }
 
-        fun show(fragmentManager: FragmentManager) {
+        fun setTitleFont(font: Typeface?): Builder {
+            titleFont = font
+            return this
+        }
+
+        fun setContentFont(font: Typeface?): Builder {
+            contentFont = font
+            return this
+        }
+
+        fun setButtonFont(font: Typeface?): Builder {
+            buttonFont = font
+            return this
+        }
+
+        fun show(fragmentManager: FragmentManager): Builder {
             Toasting(this).show(fragmentManager, null)
-
-
+            return this
         }
 
 
