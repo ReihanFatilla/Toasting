@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.button.MaterialButton
+import com.reift.toasting.utils.Animator.jumpAnimation
 
 
 class Toasting private constructor(builder: Builder) : DialogFragment() {
@@ -35,7 +36,10 @@ class Toasting private constructor(builder: Builder) : DialogFragment() {
             dismiss()
             onButtonClicked
         }
-        v.findViewById<ImageView>(R.id.toast_icon).setImageResource(icon)
+        v.findViewById<ImageView>(R.id.toast_icon).apply {
+            setImageResource(icon)
+            jumpAnimation()
+        }
         v.findViewById<MaterialButton>(R.id.btn_action).text = buttonText
         return v
     }
