@@ -51,7 +51,7 @@ class Toasting private constructor(builder: Builder) : DialogFragment() {
             buttonFont?.let { typeface = it }
             setOnClickListener {
                 dismiss()
-                onButtonClicked
+                onButtonClicked()
             }
         }
         return v
@@ -59,7 +59,9 @@ class Toasting private constructor(builder: Builder) : DialogFragment() {
 
     class Builder(type: String = SUCCESS_TYPE) {
 
-        var onButtonClicked = {}
+        var onButtonClicked = {
+
+        }
 
         var buttonText = "Got it"
 

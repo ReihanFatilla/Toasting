@@ -4,6 +4,7 @@ import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
                 .setContentText("Please try to validate again")
                 .setButtonMessage("Try again")
                 .setOnButtonClick {
-                    // Your code
+                    Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
                 }
                 .setTitleFont(getFont(R.font.nunito_bold))
                 .setContentFont(getFont(R.font.nunito_regular))
