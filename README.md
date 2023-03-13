@@ -37,7 +37,7 @@ maven { url 'https://jitpack.io' }
 ```gradle
 dependencies {
   ...
-  implementation 'com.github.ReihanFatilla:Toasting:0.1.0'
+  implementation 'com.github.ReihanFatilla:Toasting:0.1.1'
   }
 ```
 
